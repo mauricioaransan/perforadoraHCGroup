@@ -1,0 +1,348 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<title>HC GROUP · SMARTLINK — Perforadora (Responsive)</title>
+<style>
+:root{
+  --bg:#060a16; --panel:#0d162e; --card:#122449; --ink:#e9f1ff; --muted:#9fb2d9;
+  --border:rgba(255,255,255,.10);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{margin:0;color:var(--ink);font:14px/1.45 ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;background:linear-gradient(180deg,#071022,#0a1327)}
+.wrap{width:100%;max-width:1920px;margin:0 auto}
+header{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.6rem .8rem;border-bottom:1px solid var(--border);background:rgba(9,15,30,.92);backdrop-filter:blur(6px)}
+.brand{display:flex;align-items:center;gap:.6rem;font-weight:800}
+.brand .logo{width:26px;height:26px;border-radius:7px;background:conic-gradient(#22c55e,#60a5fa,#93c5fd,#22c55e);box-shadow:0 0 14px #60a5fa inset,0 0 8px #60a5fa}
+.controls{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.btn,.pill{padding:.4rem .6rem;border:1px solid var(--border);border-radius:.7rem;background:#0f1c3f;color:#dbe9ff;font-size:.85rem}
+.btn{cursor:pointer}
+
+.main{display:grid;gap:.6rem;padding:.6rem}
+.row{display:grid;gap:.6rem}
+/* default: phones = single column */
+.row.cols-2{grid-template-columns:1fr}
+/* tablets */
+@media(min-width:780px){ .row.cols-2{grid-template-columns:1fr 1fr} }
+/* desktop wide */
+@media(min-width:1200px){ .row.cols-2{grid-template-columns:900px 1fr} }
+
+.card{background:linear-gradient(180deg,#1b2f63aa,#0f1e44dd);border:1px solid var(--border);border-radius:16px;padding:.7rem;overflow:hidden}
+.card h3{margin:.1rem 0 .5rem;font-size:1rem;color:#cfe0ff}
+.big{min-height:260px}
+
+.grid-tiles{display:grid;grid-template-columns:1fr;gap:.6rem}
+@media(min-width:600px){ .grid-tiles{grid-template-columns:1fr 1fr} }
+
+.tile{background:linear-gradient(180deg,#0d1a39,#0a142e);border:1px solid var(--border);border-radius:14px;padding:.5rem;display:grid;grid-template-columns:84px 1fr;gap:.5rem;align-items:center}
+.sg{width:84px;height:64px}
+.t-title{font-size:.8rem;color:#9fb2d9}
+.t-val{font-weight:800;font-size:1.4rem}
+.unit{font-size:.9rem;opacity:.85}
+.bar{height:10px;border-radius:999px;background:#09122a;border:1px solid var(--border);overflow:hidden}
+.bar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,#34d399,#22c55e)}
+
+.meta{display:flex;flex-wrap:wrap;gap:.9rem;align-items:center;margin-top:.4rem}
+.meta .k{color:#9fb2d9;margin-right:.35rem}
+
+/* Schematic views */
+.grid-views{display:grid;grid-template-columns:1fr;gap:.6rem}
+@media(min-width:780px){ .grid-views{grid-template-columns:1fr 1fr 1fr} }
+.viewMini{background:#0e1a3a;border:1px solid var(--border);border-radius:12px;padding:.4rem}
+.viewMini h4{margin:.2rem 0 .5rem .2rem;font-size:.85rem;color:#9fb2d9}
+.schem{width:100%;height:170px}
+@media(min-width:1100px){ .schem{height:200px} }
+.schem .node{fill:#1d2b4d;stroke:#4a67a8}
+.schem .fill{fill:#60a5fa}
+.schem text{fill:#cfe0ff;font-size:.75rem}
+.head{transform-origin:310px 85px;animation:headSpin 6s linear infinite}
+@media(max-width:480px){ .head{animation-duration:9s} }
+@keyframes headSpin{to{transform:rotate(360deg)}}
+
+/* Communication path */
+.path{width:100%;height:210px}
+.wave{stroke:#60a5fa;stroke-width:2;fill:none;stroke-dasharray:5 7;animation:dash 2.2s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-260}}
+.packet{fill:#7dd3fc;filter:drop-shadow(0 0 8px rgba(96,165,250,.9))}
+.node2{fill:#1d2b4d;stroke:#4a67a8}
+.legend{font-size:.8rem;fill:#cfe0ff}
+.comm-tiles{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:.4rem}
+@media(min-width:900px){ .comm-tiles{grid-template-columns:repeat(4,1fr)} }
+
+/* Mini map */
+.minimap{width:100%;height:260px;border:1px solid var(--border);border-radius:12px;background:#0e1733;position:relative;overflow:hidden}
+@media(min-width:900px){ .minimap{height:300px} }
+.minimap svg{width:100%;height:100%}
+.grid{fill:none;stroke:rgba(255,255,255,.05);stroke-width:.7}
+.pit{fill:rgba(52,94,170,.35);stroke:#7fb0ff;stroke-width:1.1}
+.bench{fill:none;stroke:#3c5d9a;stroke-width:1;stroke-dasharray:6 4}
+.road{fill:none;stroke:#bcd3ff80;stroke-width:1.2;stroke-dasharray:4 3}
+.cover{fill:none;stroke:#3ee9a4aa;stroke-width:1.2;stroke-dasharray:2 4}
+.marker{fill:#22c55e}.ring{fill:#22c55e33}
+.mm-legend,.mm-coords,.mm-dist{position:absolute;font-size:.75rem;color:#dce9ff;background:#00000033;padding:.2rem .35rem;border-radius:.5rem;border:1px solid var(--border)}
+.mm-legend{bottom:.35rem;left:.35rem}
+.mm-coords{top:.35rem;right:.35rem}
+.mm-dist{bottom:.35rem;right:.35rem}
+.mm-tools{position:absolute;top:.35rem;left:.35rem;display:flex;gap:.35rem}
+.mm-tools button{background:#122047;color:#cfe0ff;border:1px solid var(--border);padding:.2rem .45rem;border-radius:.5rem;cursor:pointer;font-size:.9rem}
+.compass{position:absolute;top:.35rem;left:3.2rem;color:#dce9ff;font-size:.75rem;display:flex;flex-direction:column;align-items:center}
+.compass .arr{width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-bottom:10px solid #93c5fd;margin-bottom:2px;filter:drop-shadow(0 0 6px #60a5fa)}
+.scale{position:absolute;bottom:.35rem;left:7rem;color:#dce9ff;font-size:.75rem;display:flex;align-items:center;gap:.35rem}
+.scale .bar{width:120px;height:6px;background:linear-gradient(90deg,#ffffff,#ffffff00);border-radius:4px;border:1px solid var(--border)}
+
+/* Neon glow */
+.glowPulse{animation:glow 1.4s ease-in-out infinite}
+@keyframes glow{0%{opacity:.55;filter:drop-shadow(0 0 6px #fff)}50%{opacity:1;filter:drop-shadow(0 0 14px #fff)}100%{opacity:.55;filter:drop-shadow(0 0 6px #fff)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="brand"><div class="logo"></div> HC GROUP · SMARTLINK</div>
+    <div class="controls">
+      <span class="pill" id="shiftClock">Turno 00:00:00</span>
+      <span class="pill">Encendidos: <b id="onCount">0</b></span>
+      <button class="btn" id="resetShift">Reiniciar</button>
+      <button class="btn" id="pause">⏸</button>
+    </div>
+  </header>
+
+  <section class="main">
+    <!-- Estado rápido -->
+    <div class="row cols-2">
+      <div class="card">
+        <h3>Estado rápido</h3>
+        <div class="grid-tiles">
+          <div class="tile"><svg class="sg" id="sg-rpm"></svg><div><div class="t-title">Rotación</div><div class="t-val"><span id="rpmVal">0</span> <span class="unit">RPM</span></div><div class="bar"><i id="rpmBar"></i></div></div></div>
+          <div class="tile"><svg class="sg" id="sg-adv"></svg><div><div class="t-title">Avance/min</div><div class="t-val"><span id="advVal">0</span> <span class="unit">m/min</span></div><div class="bar"><i id="advBar"></i></div></div></div>
+          <div class="tile"><svg class="sg" id="sg-tmp"></svg><div><div class="t-title">Temp. motor</div><div class="t-val"><span id="tmpVal">0</span> <span class="unit">°C</span></div><div class="bar"><i id="tmpBar"></i></div></div></div>
+          <div class="tile"><svg class="sg" id="sg-prs"></svg><div><div class="t-title">Presión hidráulica</div><div class="t-val"><span id="prsVal">0</span> <span class="unit">bar</span></div><div class="bar"><i id="prsBar"></i></div></div></div>
+          <div class="tile"><svg class="sg" id="sg-fuel"></svg><div><div class="t-title">Combustible</div><div class="t-val"><span id="fuelVal">0</span> <span class="unit">%</span></div><div class="bar"><i id="fuelBar"></i></div></div></div>
+          <div class="tile"><svg class="sg" id="sg-snr"></svg><div><div class="t-title">SNR</div><div class="t-val"><span id="snrVal">0</span> <span class="unit">dB</span></div><div class="bar"><i id="snrBar"></i></div></div></div>
+        </div>
+
+        <div class="meta">
+          <div><span class="k">Estado:</span> <span id="engineState" style="color:#ef4444;font-weight:900">APAGADO</span></div>
+          <div><span class="k">Encendidos:</span> <span id="startCount">0</span></div>
+          <div><span class="k">Uptime:</span> <span id="uptime">00:00:00</span></div>
+          <div><span class="k">Perforado:</span> <span id="drilled">0.0</span> m</div>
+          <div><span class="k">Recorrido:</span> <span id="km">0.00</span> km</div>
+        </div>
+      </div>
+
+      <!-- Vistas esquemáticas compactas -->
+      <div class="card">
+        <h3>Vistas esquemáticas</h3>
+        <div class="grid-views">
+          <div class="viewMini">
+            <h4>Perforación</h4>
+            <svg class="schem" viewBox="0 0 300 170">
+              <defs>
+                <pattern id="rock" width="18" height="18" patternUnits="userSpaceOnUse">
+                  <circle cx="4" cy="6" r="1" fill="#2c3e66"/><circle cx="10" cy="12" r="1" fill="#2c3e66"/><circle cx="14" cy="4" r="1" fill="#2c3e66"/>
+                </pattern>
+              </defs>
+              <rect x="140" y="20" width="10" height="80" class="node"/>
+              <g id="bit"><circle cx="145" cy="100" r="12" fill="#80b3ff22" stroke="#7fb0ff"/><circle cx="145" cy="100" r="3.5" fill="#7fb0ff"/></g>
+              <rect x="180" y="20" width="110" height="120" fill="url(#rock)" stroke="#2c3e66"/>
+              <path id="cuttings" d="M145 100 Q 210 95 280 100" stroke="#60a5fa" fill="none" stroke-width="2" stroke-dasharray="4 6"/>
+            </svg>
+          </div>
+          <div class="viewMini">
+            <h4>Perforadora completa</h4>
+            <svg class="schem" viewBox="0 0 300 170">
+              <rect x="50" y="110" width="160" height="10" rx="6" class="node"/>
+              <rect x="70" y="98" width="40" height="10" rx="5" class="node"/>
+              <circle cx="95" cy="125" r="9" class="node"/><circle cx="170" cy="125" r="9" class="node"/>
+              <rect x="220" y="40" width="10" height="70" class="node"/>
+              <g class="head"><circle cx="225" cy="65" r="16" stroke="#7fb0ff" fill="none" stroke-width="2"/><circle cx="225" cy="65" r="7" fill="#7fb0ff22"/></g>
+              <g transform="translate(26,6)"><rect x="0" y="30" width="24" height="56" rx="6" class="node"/><rect x="4" y="34" width="16" height="46" class="fill" opacity=".4"/></g>
+            </svg>
+          </div>
+          <div class="viewMini">
+            <h4>Compresor / Aire</h4>
+            <svg class="schem" viewBox="0 0 300 170">
+              <rect x="20" y="76" width="80" height="36" rx="8" class="node"/>
+              <circle cx="140" cy="95" r="22" class="node"/>
+              <path d="M100 95 L 120 95" stroke="#7fb0ff"/><path d="M166 95 L 220 95" stroke="#7fb0ff"/>
+              <rect x="220" y="76" width="8" height="36" class="node"/>
+              <path id="airflow" d="M30 95 C 90 70, 160 70, 220 87" stroke="#38bdf8" fill="none" stroke-width="2" stroke-dasharray="5 7"/>
+              <circle id="bubble" r="3.5" fill="#93c5fd"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ruta + Mini mapa -->
+    <div class="row cols-2">
+      <div class="card">
+        <h3>Ruta de Comunicación (Perforadora → Torre RB06 → Core)</h3>
+        <svg class="path" viewBox="0 0 960 210">
+          <rect x="100" y="120" width="150" height="60" rx="8" class="node2"/>
+          <text x="175" y="195" class="legend" text-anchor="middle">Perforadora</text>
+          <g transform="translate(430,30)"><rect x="0" y="60" width="20" height="120" class="node2"/><path d="M10 60 L30 30 M10 60 L-10 30" stroke="#4a67a8" fill="none"/><circle cx="10" cy="26" r="6" fill="#4a67a8"/><text x="10" y="195" class="legend" text-anchor="middle">Torre RB06</text></g>
+          <g transform="translate(680,60)"><ellipse cx="60" cy="40" rx="45" ry="28" class="node2"/><ellipse cx="35" cy="35" rx="22" ry="14" class="node2"/><ellipse cx="88" cy="33" rx="22" ry="14" class="node2"/><text x="60" y="95" class="legend" text-anchor="middle">Core</text></g>
+          <path id="l1" class="wave" d="M250 150 C 300 120, 340 120, 420 130"/><path id="l2" class="wave" d="M450 130 C 540 100, 600 90, 760 90"/>
+          <circle id="p1" r="4" class="packet"/><circle id="p2" r="4" class="packet"/><circle id="p3" r="4" class="packet"/>
+        </svg>
+        <div class="comm-tiles">
+          <div class="tile"><svg class="sg" id="sg-rtt"></svg><div><div class="t-title">RTT</div><div class="t-val"><span id="rttVal">0</span> <span class="unit">ms</span></div><div class="bar"><i id="rttBar"></i></div></div></div>
+          <div class="tile"><svg class="sg" id="sg-jit"></svg><div><div class="t-title">Jitter</div><div class="t-val"><span id="jitVal">0</span> <span class="unit">ms</span></div><div class="bar"><i id="jitBar"></i></div></div></div>
+          <div class="tile"><svg class="sg" id="sg-loss"></svg><div><div class="t-title">Pérdida</div><div class="t-val"><span id="lossVal">0</span> <span class="unit">%</span></div><div class="bar"><i id="lossBar"></i></div></div></div>
+          <div class="tile"><svg class="sg" id="sg-sla"></svg><div><div class="t-title">SLA</div><div class="t-val"><span id="slaVal">0</span> <span class="unit">%</span></div><div class="bar"><i id="slaBar2"></i></div></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Mini mapa de recorrido (Vista planta)</h3>
+        <div class="minimap">
+          <div class="mm-tools"><button id="zin">+</button><button id="zout">−</button><button id="zreset">Reset</button></div>
+          <div class="compass"><div class="arr"></div><div>N</div></div>
+          <div class="mm-coords" id="mmc">UTM E 0 · N 0</div>
+          <div class="mm-legend">Pit Norte · Sector Oeste · RB06</div>
+          <div class="scale"><div class="bar" id="scaleBar"></div><span id="scaleTxt">200 m</span></div>
+          <div class="mm-dist" id="mmdist">Recorrido turno: 0.00 km</div>
+          <svg id="mmsvg" viewBox="0 0 960 300">
+            <defs>
+              <pattern id="mmgrid" width="20" height="20" patternUnits="userSpaceOnUse"><path d="M 20 0 L 0 0 0 20" class="grid"/></pattern>
+              <radialGradient id="snrgrad" cx="0" cy="0" r="1">
+                <stop offset="0%" stop-color="#22c55e88"/>
+                <stop offset="60%" stop-color="#facc1588"/>
+                <stop offset="100%" stop-color="#ef444488"/>
+              </radialGradient>
+            </defs>
+            <rect width="960" height="300" fill="url(#mmgrid)"/>
+            <g id="vp">
+              <ellipse cx="480" cy="160" rx="260" ry="120" class="pit"/><ellipse cx="480" cy="160" rx="200" ry="90" class="bench"/><ellipse cx="480" cy="160" rx="140" ry="65" class="bench"/><ellipse cx="480" cy="160" rx="90" ry="42" class="bench"/>
+              <path d="M80,250 C220,210 340,200 420,190 C560,180 660,160 880,140" class="road"/>
+              <polygon points="820,120 900,120 920,180 840,190" fill="#ef444433" stroke="#ef4444aa" stroke-dasharray="6 4"/>
+              <polygon points="120,220 200,210 240,250 150,260" fill="#22c55e33" stroke="#22c55e99" stroke-dasharray="6 4"/>
+              <g><circle cx="430" cy="120" r="3" fill="#93c5fd"/><text x="435" y="124" fill="#cfe0ff" font-size="10">RB06</text><circle cx="430" cy="120" r="60" class="cover"/><circle cx="430" cy="120" r="110" class="cover" opacity=".5"/></g>
+              <g><circle cx="260" cy="170" r="3" fill="#93c5fd"/></g>
+              <g><circle cx="700" cy="110" r="3" fill="#93c5fd"/></g>
+              <circle id="snrHeat" cx="430" cy="120" r="120" fill="url(#snrgrad)" opacity=".35"/>
+              <polyline id="crumb" fill="none" stroke="#98b9ff" stroke-width="2" stroke-opacity=".8"/>
+              <circle id="ring" class="ring" cx="300" cy="180" r="18"/><circle id="mk" class="marker" cx="300" cy="180" r="5"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="card">
+        <h3>Rendimiento (Throughput) · Últimos 60s</h3>
+        <canvas id="thrChart" style="width:100%;height:110px;border:1px solid var(--border);border-radius:10px;background:#0e173366"></canvas>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const clamp=(v,min,max)=>Math.min(Math.max(v,min),max);
+function setBar(el, pct){ el.style.width = Math.round(clamp(pct,0,100))+"%"; el.style.background = pct>70?'linear-gradient(90deg,#34d399,#22c55e)':'linear-gradient(90deg,#facc15,#f59e0b)'; }
+function drawSemiGauge(svgId, value, min, max){
+  const svg=document.getElementById(svgId); if(!svg) return; svg.innerHTML="";
+  const box=svg.getBoundingClientRect(); const w=box.width, h=box.height;
+  const cx=w/2, cy=h-6, r=Math.min(w,h*1.2)/2;
+  const arc=(a0,a1,clr,wid)=>{const x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0); const x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1); const p=document.createElementNS("http://www.w3.org/2000/svg","path"); p.setAttribute("d",`M ${x0} ${y0} A ${r} ${r} 0 0 0 ${x1} ${y1}`); p.setAttribute("fill","none"); p.setAttribute("stroke",clr); p.setAttribute("stroke-width",wid); p.setAttribute("stroke-linecap","round"); svg.appendChild(p); return p;};
+  const s=Math.PI, e=2*Math.PI;
+  [["#22c55e",0,.25],["#facc15",.25,.55],["#f59e0b",.55,.8],["#ef4444",.8,1]].forEach(([c,a,b])=>arc(s+(e-s)*a, s+(e-s)*b, c, Math.max(6,w*.08)));
+  const t=clamp((value-min)/(max-min),0,1), ang=s+(e-s)*t;
+  const nd=document.createElementNS("http://www.w3.org/2000/svg","line"); nd.setAttribute("x1",cx); nd.setAttribute("y1",cy); nd.setAttribute("x2",cx+(r-8)*Math.cos(ang)); nd.setAttribute("y2",cy+(r-8)*Math.sin(ang)); nd.setAttribute("stroke","#cfe4ff"); nd.setAttribute("stroke-width",Math.max(2,w*.03)); nd.setAttribute("stroke-linecap","round"); svg.appendChild(nd);
+  const g=document.createElementNS("http://www.w3.org/2000/svg","path"); const wGlow=(e-s)*.08; const mk=(a0,a1)=>{const x0=cx+r*Math.cos(a0), y0=cy+r*Math.sin(a0); const x1=cx+r*Math.cos(a1), y1=cy+r*Math.sin(a1); return `M ${x0} ${y0} A ${r} ${r} 0 0 0 ${x1} ${y1}`;}; g.setAttribute("d",mk(ang-wGlow, ang+wGlow)); g.setAttribute("stroke", t<.25?"#22c55e":t<.55?"#facc15":t<.8?"#f59e0b":"#ef4444"); g.setAttribute("stroke-width",Math.max(8,w*.12)); g.setAttribute("stroke-linecap","round"); g.setAttribute("fill","none"); g.setAttribute("opacity",".75"); g.setAttribute("class","glowPulse"); svg.appendChild(g);
+}
+
+// Throughput line (auto-resize)
+let thrCtx; (function(){const c=document.getElementById('thrChart'); const r=window.devicePixelRatio||1; const resize=()=>{c.width=c.clientWidth*r; c.height=c.clientHeight*r; thrCtx=c.getContext('2d');}; resize(); window.addEventListener('resize',resize);})();
+const thrData=Array.from({length:100},()=>8);
+function drawThr(){const ctx=thrCtx,w=ctx.canvas.width,h=ctx.canvas.height;ctx.clearRect(0,0,w,h);ctx.strokeStyle="#88b6ff";ctx.lineWidth=2;ctx.beginPath();const min=Math.min(...thrData),max=Math.max(...thrData);thrData.forEach((v,i)=>{const x=i/(thrData.length-1)*w;const y=h-(v-min)/(max-min+1e-6)*h;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.stroke();}
+
+// Mini-mapa + sim
+const mk=document.getElementById('mk'), ring=document.getElementById('ring'), crumb=document.getElementById('crumb'), mmc=document.getElementById('mmc'), mmdist=document.getElementById('mmdist'), scaleBar=document.getElementById('scaleBar'), scaleTxt=document.getElementById('scaleTxt'), snrHeat=document.getElementById('snrHeat');
+const vp=document.getElementById('vp'), mmsvg=document.getElementById('mmsvg'); let mm={scale:1, tx:0, ty:0, dragging:false, lx:0, ly:0};
+function applyMM(){vp.setAttribute('transform',`translate(${mm.tx} ${mm.ty}) scale(${mm.scale})`)}
+document.getElementById('zin').onclick=()=>{mm.scale=Math.min(2.3,mm.scale*1.2);applyMM();updateScale()}
+document.getElementById('zout').onclick=()=>{mm.scale=Math.max(.8,mm.scale/1.2);applyMM();updateScale()}
+document.getElementById('zreset').onclick=()=>{mm.scale=1;mm.tx=0;mm.ty=0;applyMM();updateScale()}
+mmsvg.addEventListener('mousedown',e=>{mm.dragging=true;mm.lx=e.clientX;mm.ly=e.clientY}); window.addEventListener('mouseup',()=>mm.dragging=false);
+window.addEventListener('mousemove',e=>{if(!mm.dragging)return;mm.tx+=e.clientX-mm.lx;mm.ty+=e.clientY-mm.ly;mm.lx=e.clientX;mm.ly=e.clientY;applyMM()});
+mmsvg.addEventListener('wheel',e=>{e.preventDefault();const d=e.deltaY<0?1.1:.9;mm.scale=clamp(mm.scale*d,.8,2.3);applyMM();updateScale()},{passive:false});
+
+const MPP=2; function updateScale(){ const meters=200; const px=meters/MPP*mm.scale; scaleBar.style.width=px+"px"; scaleTxt.textContent=meters+" m"; } updateScale();
+
+const TANK_LITERS=1200;
+let shift={ start:Date.now(), startFuelPct:76, meters:0, drilled:0, onCount:0, uptime:0 };
+document.getElementById('resetShift').onclick=()=>{ shift={ start:Date.now(), startFuelPct:st.fuel, meters:0, drilled:0, onCount:0, uptime:0 }; lastX=null; lastY=null; updateShiftClock(); document.getElementById('onCount').textContent='0'; document.getElementById('startCount').textContent='0'; document.getElementById('drilled').textContent='0.0'; document.getElementById('km').textContent='0.00'; };
+function updateShiftClock(){ const t=(Date.now()-shift.start)/1000; const h=String(Math.floor(t/3600)).padStart(2,'0'), m=String(Math.floor(t%3600/60)).padStart(2,'0'), s=String(Math.floor(t%60)).padStart(2,'0'); document.getElementById('shiftClock').textContent=`Turno ${h}:${m}:${s}`;} setInterval(updateShiftClock,1000);
+
+const st={ rpm:80, adv:1.8, tmp:86, prs:190, fuel:shift.startFuelPct, snr:24, rtt:160, jit:12, loss:0.2, sla:99, thr:8 };
+let t=0, lastTime=performance.now(), lastX=null, lastY=null, engineOn=false, lastEngineOn=false; let trail=[];
+
+function moveAlongPath(el, path, t){const len=path.getTotalLength();const p=path.getPointAtLength((t%1)*len);el.setAttribute('cx',p.x);el.setAttribute('cy',p.y);}
+const p1=document.getElementById('p1'), p2=document.getElementById('p2'), p3=document.getElementById('p3');
+const l1=document.getElementById('l1'), l2=document.getElementById('l2');
+
+function tick(){
+  const now=performance.now(); const dt=Math.min(2,(now-lastTime)/1000); lastTime=now;
+  st.rpm = clamp(st.rpm + (Math.random()-.5)*10, 0, 120);
+  st.adv = clamp(st.adv + (Math.random()-.5)*.3, 0, 3);
+  st.tmp = clamp(st.tmp + (Math.random()-.5)*2, 50, 110);
+  st.prs = clamp(st.prs + (Math.random()-.5)*14, 120, 250);
+  if(Math.random()<0.05){ st.rpm *= Math.random()<0.3 ? 0.1 : 1.2; }
+  engineOn = (st.rpm>8 || st.adv>0.2);
+  if(engineOn!==lastEngineOn){ if(engineOn){ shift.onCount++; document.getElementById('onCount').textContent=shift.onCount; document.getElementById('startCount').textContent=shift.onCount; } lastEngineOn=engineOn; }
+  if(engineOn){ shift.uptime += dt; }
+  document.getElementById('engineState').textContent = engineOn ? "ENCENDIDO" : "APAGADO";
+  document.getElementById('engineState').style.color = engineOn ? "#22c55e" : "#ef4444";
+  const uh=Math.floor(shift.uptime/3600), um=Math.floor(shift.uptime%3600/60), us=Math.floor(shift.uptime%60);
+  document.getElementById('uptime').textContent = `${String(uh).padStart(2,'0')}:${String(um).padStart(2,'0')}:${String(us).padStart(2,'0')}`;
+
+  shift.drilled += st.adv * dt / 60; document.getElementById('drilled').textContent = shift.drilled.toFixed(1);
+  const consLph = engineOn ? 80*(0.8 + st.adv/5) : 6; const consPctPerSec = (consLph / TANK_LITERS) / 3600 * 100;
+  st.fuel = clamp(st.fuel - consPctPerSec*dt, 5, 100);
+  st.snr = clamp(st.snr + (Math.random()-.5)*2.5, 8, 35);
+  st.rtt = clamp(st.rtt + (Math.random()-.5)*28, 40, 300);
+  st.jit = Math.abs((Math.random()-.5)*24);
+  st.loss = clamp(st.loss + (Math.random()-.5)*.4, 0, 5);
+  st.sla  = clamp(100 - st.loss*2 - Math.max(0,(st.rtt-200)/12), 85, 100);
+  st.thr  = clamp(18 - st.rtt/18 + (Math.random()-.5)*2, 0, 20);
+
+  rpmVal.textContent=Math.round(st.rpm); setBar(rpmBar, st.rpm/120*100); drawSemiGauge("sg-rpm", st.rpm, 0, 120);
+  advVal.textContent=st.adv.toFixed(2); setBar(advBar, st.adv/3*100); drawSemiGauge("sg-adv", st.adv, 0, 3);
+  tmpVal.textContent=Math.round(st.tmp); setBar(tmpBar, (st.tmp-50)/60*100); drawSemiGauge("sg-tmp", st.tmp, 50, 110);
+  prsVal.textContent=Math.round(st.prs); setBar(prsBar, (st.prs-120)/130*100); drawSemiGauge("sg-prs", st.prs, 120, 250);
+  fuelVal.textContent=Math.round(st.fuel); setBar(fuelBar, st.fuel); drawSemiGauge("sg-fuel", st.fuel, 0, 100);
+  snrVal.textContent=st.snr.toFixed(1); setBar(snrBar, st.snr/40*100); drawSemiGauge("sg-snr", st.snr, 0, 40);
+
+  rttVal.textContent = Math.round(st.rtt); setBar(rttBar, clamp(1 - st.rtt/320,0,1)*100); drawSemiGauge("sg-rtt", st.rtt, 0, 320);
+  jitVal.textContent = st.jit.toFixed(1); setBar(jitBar, clamp(1 - st.jit/80,0,1)*100); drawSemiGauge("sg-jit", st.jit, 0, 80);
+  lossVal.textContent = st.loss.toFixed(1); setBar(lossBar, clamp(1 - st.loss/5,0,1)*100); drawSemiGauge("sg-loss", st.loss, 0, 5);
+  slaVal.textContent  = st.sla.toFixed(1);  setBar(slaBar2, st.sla); drawSemiGauge("sg-sla", st.sla, 0, 100);
+
+  // redraw throughput
+  thrData.push(st.thr); thrData.shift(); drawThr();
+
+  // Animar paquetes
+  t += Math.max(0.06, 1 - st.rtt/320); moveAlongPath(p1,l1,t*.9); moveAlongPath(p2,l2,t*1.0); moveAlongPath(p3,l2,t*1.1+.3);
+
+  // Movimiento en mini-mapa
+  const x = 300 + 120*Math.sin(t/4) + 40*Math.sin(t/2.2);
+  const y = 180 - 60*Math.cos(t/4.6) + 10*Math.sin(t/3.1);
+  mk.setAttribute("cx",x); mk.setAttribute("cy",y); ring.setAttribute("cx",x); ring.setAttribute("cy",y);
+  if(lastX!==null){ const dx=x-lastX, dy=y-lastY; const d=Math.hypot(dx,dy)*MPP; shift.meters += d; document.getElementById('km').textContent=(shift.meters/1000).toFixed(2); }
+  lastX=x; lastY=y;
+  trail.push(`${x},${y}`); if(trail.length>220) trail.shift(); crumb.setAttribute("points", trail.join(" "));
+  const E=Math.round(624000 + x*MPP), N=Math.round(3378000 + y*MPP); mmc.textContent=`UTM E ${E} · N ${N}`; mmdist.textContent=`Recorrido turno: ${(shift.meters/1000).toFixed(2)} km`;
+  const dx2=x-430, dy2=y-120; const dist=Math.hypot(dx2,dy2); const r = clamp(160 - dist*0.5, 40, 160); snrHeat.setAttribute('r', r);
+}
+
+let timer=setInterval(tick,1500); tick();
+document.getElementById('pause').onclick=()=>{ if(timer){clearInterval(timer);timer=null;pause.textContent="▶"} else {timer=setInterval(tick,1500);pause.textContent="⏸"} }
+</script>
+</body>
+</html>

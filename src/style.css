@@ -1,0 +1,16 @@
+/* Estilos globales para la aplicación */
+
+/* Resetear estilos predeterminados */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Asegurar que el app ocupe toda la pantalla */
+#app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
